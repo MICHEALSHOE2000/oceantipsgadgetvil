@@ -1,374 +1,216 @@
-const whatsappNumber = "2348037793857";
+const WHATSAPP_NUMBER = "2347038995759";
+const INITIAL_VISIBLE_COUNT = 8;
+const LOAD_MORE_STEP = 8;
 
-const modelStorage = {
-  "iPhone 17": "128GB, 256GB, 512GB",
-  "iPhone 17 Air": "128GB, 256GB, 512GB",
-  "iPhone 17 Pro": "128GB, 256GB, 512GB",
-  "iPhone 17 Pro Max": "128GB, 256GB, 512GB, 1TB",
-  "iPhone 16": "128GB, 256GB, 512GB",
-  "iPhone 16 Plus": "128GB, 256GB, 512GB",
-  "iPhone 16 Pro": "128GB, 256GB, 512GB",
-  "iPhone 16 Pro Max": "128GB, 256GB, 512GB, 1TB",
-  "iPhone 15": "128GB, 256GB",
-  "iPhone 15 Pro": "128GB, 256GB, 512GB",
-  "iPhone 15 Pro Max": "256GB, 512GB, 1TB",
-  "iPhone 14": "128GB, 256GB",
-  "iPhone 14 Pro": "128GB, 256GB, 512GB",
-  "iPhone 14 Pro Max": "128GB, 256GB, 512GB, 1TB",
-  "iPhone 13": "128GB, 256GB",
-  "iPhone 13 Pro": "128GB, 256GB, 512GB",
-  "iPhone 13 Pro Max": "128GB, 256GB, 512GB",
-  "iPhone 12": "64GB, 128GB, 256GB",
-  "iPhone 12 Pro": "64GB, 256GB, 512GB",
-  "iPhone 12 Pro Max": "64GB, 256GB, 512GB",
-  "iPhone 11": "64GB, 128GB, 256GB",
-  "iPhone 11 Pro": "64GB, 256GB, 512GB",
-  "iPhone 11 Pro Max": "64GB, 256GB, 512GB"
-};
-
-// Edit this model list when stock changes. UK Used and Brand New use the same order.
-const orderedModels = [
-  "iPhone 17",
-  "iPhone 17 Air",
-  "iPhone 17 Pro",
-  "iPhone 17 Pro Max",
-  "iPhone 16",
-  "iPhone 16 Plus",
-  "iPhone 16 Pro",
-  "iPhone 16 Pro Max",
-  "iPhone 15",
-  "iPhone 15 Pro",
-  "iPhone 15 Pro Max",
-  "iPhone 14",
-  "iPhone 14 Pro",
-  "iPhone 14 Pro Max",
-  "iPhone 13",
-  "iPhone 13 Pro",
-  "iPhone 13 Pro Max",
-  "iPhone 12",
-  "iPhone 12 Pro",
-  "iPhone 12 Pro Max",
-  "iPhone 11",
-  "iPhone 11 Pro",
-  "iPhone 11 Pro Max"
+const categories = [
+  { name: "iPhone", image: "images/17pro-1.jpg", copy: "Premium Apple models for buyers who want trusted performance." },
+  { name: "Android", image: "images/16promax-1.jpg", copy: "Samsung, Tecno, Infinix, and more Android options." },
+  { name: "iPad", image: "images/15promax-1.jpeg", copy: "Apple iPads for work, creativity, school, and entertainment." },
+  { name: "Tablet", image: "images/15promax-2.jpeg", copy: "Everyday tablets for browsing, calls, learning, and business." },
+  { name: "Children Tab", image: "images/14-1.jpeg", copy: "Learning-focused tabs for children and family use." },
+  { name: "Laptop", image: "images/brand17.jpg", copy: "HP, Dell, MacBook, and work-ready laptops." },
+  { name: "Accessories", image: "images/15pro-3.jpeg", copy: "Chargers, AirPods, power banks, cases, and essentials." }
 ];
 
-const ukUsedModels = orderedModels;
-const brandNewModels = orderedModels;
-
-function slugify(model) {
-  return model.toLowerCase().replace(/\s+/g, "-");
-}
-
-const modelImageOverrides = {
-  "iPhone 17": ["images/17-1.jpg", "images/17-2.jpg", "images/17-3.jpg"],
-  "iPhone 15": ["images/15-1.jpeg", "images/15-2.jpeg", "images/15-3.jpeg"],
-  "iPhone 15 Pro": ["images/15pro-1.jpeg", "images/15pro-2.jpeg", "images/15pro-3.jpeg"],
-  "iPhone 15 Pro Max": ["images/15promax-1.jpeg", "images/15promax-2.jpeg", "images/15promax-3.jpeg"],
-  "iPhone 14": ["images/14-1.jpeg", "images/14-2.jpeg", "images/14-3.jpeg"],
-  "iPhone 14 Pro": ["images/14pro-1.jpeg", "images/14pro-2.jpeg", "images/14pro-3.jpeg"],
-  "iPhone 14 Pro Max": ["images/14promax-1.jpeg", "images/14promax-2.jpeg", "images/14promax-3.jpeg"],
-  "iPhone 13": ["images/13-1.jpeg", "images/13-2.jpeg", "images/13-3.jpeg"],
-  "iPhone 13 Pro": ["images/13pro-1.jpeg", "images/13pro-2.jpeg", "images/13pro-3.jpeg"],
-  "iPhone 13 Pro Max": ["images/13promax-1.jpeg", "images/13promax-2.jpeg", "images/13promax-3.jpeg"],
-  "iPhone 12": ["images/12.jpeg", "images/12-2.jpeg", "images/12-3.jpeg"],
-  "iPhone 12 Pro": ["images/12pro-1.jpeg", "images/12pro-2.jpeg", "images/12pro-3.jpeg"],
-  "iPhone 12 Pro Max": ["images/12promax-1.jpeg", "images/12promax-2.jpeg", "images/12promax-3.jpeg"],
-  "iPhone 11": ["images/11-1.jpeg", "images/11-2.jpeg", "images/11-3.jpeg"],
-  "iPhone 11 Pro": ["images/11pro-1.jpeg", "images/11pro-2.jpeg", "images/11pro-3.jpeg"],
-  "iPhone 11 Pro Max": ["images/11promax-1.jpeg", "images/11promax-2.jpeg", "images/11promax-3.jpeg"],
-  "iPhone 17 Air": ["images/17air-1.jpg", "images/17air-2.jpg", "images/17air-3.jpg"],
-  "iPhone 17 Pro": ["images/17pro-1.jpg", "images/17pro-2.jpg", "images/17pro-3.jpg"],
-  "iPhone 17 Pro Max": ["images/17promax-1.jpg", "images/17promax-2.jpg"],
-  "iPhone 16": ["images/16-1.jpg", "images/16-2.jpg", "images/16-3.jpg"],
-  "iPhone 16 Plus": ["images/16plus-1.jpg", "images/16plus-2.png", "images/16plus-3.jpg"],
-  "iPhone 16 Pro": ["images/16pro-1.jpg", "images/16pro-2.jpg", "images/16pro-3.jpg"],
-  "iPhone 16 Pro Max": ["images/16promax-1.jpg", "images/16promax-2.jpg", "images/16promax-3.jpg"]
-};
-
-function makeImages(model) {
-  if (modelImageOverrides[model]) {
-    return modelImageOverrides[model];
-  }
-
-  const slug = slugify(model);
-  return [1, 2, 3, 4].map((number) => `images/${slug}-${number}.jpg`);
-}
-
+// Add more objects to this array to grow the catalog. Rendering is paginated for performance.
 const products = [
-  ...ukUsedModels.map((model) => ({
-    id: `uk-${slugify(model)}`,
-    model,
-    condition: "UK Used",
-    storage: modelStorage[model],
-    images: makeImages(model)
-  })),
-  ...brandNewModels.map((model) => ({
-    id: `new-${slugify(model)}`,
-    model,
-    condition: "Brand New",
-    storage: modelStorage[model],
-    images: makeImages(model)
-  }))
+  { id: 1, name: "iPhone 15 Pro Max", category: "iPhone", condition: "New / UK Used options", image: "images/15promax-1.jpeg", shortDescription: "Flagship Apple performance with pro camera features.", badge: "Popular", whatsappMessage: "iPhone 15 Pro Max" },
+  { id: 2, name: "iPhone 14 Pro Max", category: "iPhone", condition: "New / UK Used options", image: "images/14promax-1.jpeg", shortDescription: "Premium iPhone model with strong battery and display.", badge: "Hot Deal", whatsappMessage: "iPhone 14 Pro Max" },
+  { id: 3, name: "Samsung Galaxy S23 Ultra", category: "Android", condition: "Available on request", image: "images/16pro-1.jpg", shortDescription: "High-end Android option for power users and creators.", badge: "Android", whatsappMessage: "Samsung Galaxy S23 Ultra" },
+  { id: 4, name: "Samsung Galaxy A Series", category: "Android", condition: "Available on request", image: "images/16-1.jpg", shortDescription: "Everyday Samsung phones with reliable value.", badge: "Value", whatsappMessage: "Samsung Galaxy A series" },
+  { id: 5, name: "Tecno Camon Series", category: "Android", condition: "Available on request", image: "images/13pro-1.jpeg", shortDescription: "Stylish Android phones with strong camera features.", badge: "Camera", whatsappMessage: "Tecno Camon series" },
+  { id: 6, name: "Infinix Note Series", category: "Android", condition: "Available on request", image: "images/13-1.jpeg", shortDescription: "Large-screen Android phones for work and entertainment.", badge: "Budget", whatsappMessage: "Infinix Note series" },
+  { id: 7, name: "iPad Pro", category: "iPad", condition: "Available on request", image: "images/15promax-2.jpeg", shortDescription: "Powerful iPad for design, school, media, and business.", badge: "Pro", whatsappMessage: "iPad Pro" },
+  { id: 8, name: "Samsung Tablet", category: "Tablet", condition: "Available on request", image: "images/14pro-2.jpeg", shortDescription: "Android tablet options for browsing and productivity.", badge: "Tablet", whatsappMessage: "Samsung Tablet" },
+  { id: 9, name: "Children Learning Tab", category: "Children Tab", condition: "Available on request", image: "images/12-2.jpeg", shortDescription: "Kid-friendly tab options for learning and play.", badge: "Kids", whatsappMessage: "Children Learning Tab" },
+  { id: 10, name: "HP Laptop", category: "Laptop", condition: "Available on request", image: "images/brand17.jpg", shortDescription: "Work, school, and business laptop options from HP.", badge: "Laptop", whatsappMessage: "HP Laptop" },
+  { id: 11, name: "Dell Laptop", category: "Laptop", condition: "Available on request", image: "images/shop.jpeg", shortDescription: "Reliable Dell laptops for office and study needs.", badge: "Work Ready", whatsappMessage: "Dell Laptop" },
+  { id: 12, name: "MacBook", category: "Laptop", condition: "Available on request", image: "images/17air-1.jpg", shortDescription: "Apple laptop options for creators and professionals.", badge: "Apple", whatsappMessage: "MacBook" },
+  { id: 13, name: "Phone Charger", category: "Accessories", condition: "Available on request", image: "images/11-1.jpeg", shortDescription: "Charging accessories for different phone models.", badge: "Essential", whatsappMessage: "Phone Charger" },
+  { id: 14, name: "AirPods", category: "Accessories", condition: "Available on request", image: "images/11pro-1.jpeg", shortDescription: "Wireless audio accessories for calls and music.", badge: "Audio", whatsappMessage: "AirPods" },
+  { id: 15, name: "Power Bank", category: "Accessories", condition: "Available on request", image: "images/12pro-1.jpeg", shortDescription: "Portable backup power for daily movement.", badge: "Power", whatsappMessage: "Power Bank" },
+  { id: 16, name: "Phone Case", category: "Accessories", condition: "Available on request", image: "images/12promax-1.jpeg", shortDescription: "Protective cases for popular phone models.", badge: "Protection", whatsappMessage: "Phone Case" },
+  { id: 17, name: "iPhone 13 Pro Max", category: "iPhone", condition: "New / UK Used options", image: "images/13promax-1.jpeg", shortDescription: "Strong Apple flagship option with great camera quality.", badge: "Featured", whatsappMessage: "iPhone 13 Pro Max" },
+  { id: 18, name: "iPhone 12 Pro", category: "iPhone", condition: "UK Used options", image: "images/12pro-1.jpeg", shortDescription: "A premium iPhone option at a more accessible range.", badge: "Available", whatsappMessage: "iPhone 12 Pro" },
+  { id: 19, name: "Android Phone Bundle", category: "Android", condition: "Available on request", image: "images/16plus-1.jpg", shortDescription: "Ask for current Android phones that match your budget.", badge: "Ask Us", whatsappMessage: "Android Phone Bundle" },
+  { id: 20, name: "Tablet Accessories", category: "Accessories", condition: "Available on request", image: "images/15-3.jpeg", shortDescription: "Cases, chargers, and useful tablet add-ons.", badge: "Add-ons", whatsappMessage: "Tablet Accessories" }
 ];
 
+const categoryGrid = document.querySelector("#categoryGrid");
+const filterTabs = document.querySelector("#filterTabs");
 const productGrid = document.querySelector("#productGrid");
 const searchInput = document.querySelector("#searchInput");
 const resultsCount = document.querySelector("#resultsCount");
-const tabs = document.querySelectorAll(".tab");
-const shopImages = document.querySelectorAll(".shop-gallery img");
+const loadMoreBtn = document.querySelector("#loadMoreBtn");
 const heroSlides = document.querySelectorAll(".hero-slide");
 const heroDots = document.querySelectorAll(".carousel-dot");
 const menuToggle = document.querySelector(".menu-toggle");
 const navActions = document.querySelector(".nav-actions");
-const categoryCards = document.querySelectorAll(".category-card");
-const faqItems = document.querySelectorAll(".faq-item");
 
 let activeFilter = "All";
+let visibleCount = INITIAL_VISIBLE_COUNT;
 let activeHeroSlide = 0;
 let heroTimer;
 
-// Polished fallback artwork keeps the catalog presentable before real product photos are added.
-function createPlaceholderImage(model, condition) {
-  const label = `${condition} ${model}`;
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="675" viewBox="0 0 900 675">
-      <defs>
-        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="#f8fafc"/>
-          <stop offset="100%" stop-color="#cfd7e3"/>
-        </linearGradient>
-        <linearGradient id="phone" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="#151923"/>
-          <stop offset="45%" stop-color="#3b4352"/>
-          <stop offset="100%" stop-color="#080a0f"/>
-        </linearGradient>
-      </defs>
-      <rect width="900" height="675" fill="url(#bg)"/>
-      <circle cx="724" cy="118" r="170" fill="#d8b45a" opacity=".24"/>
-      <circle cx="145" cy="576" r="190" fill="#0ea36f" opacity=".12"/>
-      <rect x="326" y="80" width="248" height="500" rx="48" fill="#12151d"/>
-      <rect x="344" y="100" width="212" height="460" rx="38" fill="url(#phone)"/>
-      <rect x="407" y="122" width="86" height="22" rx="11" fill="#030407"/>
-      <path d="M392 410c44-64 86-92 132-84 32 6 56 28 72 66v168H344v-70c16-13 32-40 48-80z" fill="#d8b45a" opacity=".42"/>
-      <text x="450" y="630" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700" fill="#111318">${label}</text>
-    </svg>
-  `;
-
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+function whatsappLink(productName) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hello, I want to order ${productName}. Is it available and what is the current price?`)}`;
 }
 
-function createShopPlaceholderImage(index) {
-  const label = `Skyfonze Limited Shop ${index}`;
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="675" viewBox="0 0 900 675">
-      <defs>
-        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="#0b0d13"/>
-          <stop offset="100%" stop-color="#2d3543"/>
-        </linearGradient>
-        <linearGradient id="glass" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="#ffffff" stop-opacity=".62"/>
-          <stop offset="100%" stop-color="#d8b45a" stop-opacity=".18"/>
-        </linearGradient>
-      </defs>
-      <rect width="900" height="675" fill="url(#bg)"/>
-      <rect x="112" y="154" width="676" height="366" rx="28" fill="#f6f7f9"/>
-      <rect x="112" y="154" width="676" height="84" rx="28" fill="#111318"/>
-      <text x="450" y="209" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#ffffff">SKYFONZE LIMITED</text>
-      <rect x="162" y="278" width="250" height="194" rx="16" fill="url(#glass)"/>
-      <rect x="488" y="278" width="250" height="194" rx="16" fill="url(#glass)"/>
-      <rect x="235" y="326" width="104" height="146" rx="22" fill="#151923"/>
-      <rect x="560" y="326" width="104" height="146" rx="22" fill="#151923"/>
-      <rect x="0" y="520" width="900" height="155" fill="#d8b45a" opacity=".18"/>
-      <text x="450" y="602" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff">${label}</text>
-    </svg>
-  `;
-
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+function setFilter(categoryName) {
+  activeFilter = categoryName;
+  visibleCount = INITIAL_VISIBLE_COUNT;
+  searchInput.value = "";
+  renderFilterTabs();
+  renderProducts();
+  document.querySelector("#products").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function buildWhatsappLink(product) {
-  const message = `Hello, I want to order the ${product.condition} ${product.model}. Is it available and what is the current price?`;
-  return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+function renderCategories() {
+  categoryGrid.innerHTML = categories.map((category) => `
+    <article class="category-card" data-category="${category.name}">
+      <img src="${category.image}" alt="${category.name} gadgets at MEGABROS ENTERPRISE" loading="lazy">
+      <div>
+        <h3>${category.name}</h3>
+        <p>${category.copy}</p>
+        <button type="button">View Products</button>
+      </div>
+    </article>
+  `).join("");
+
+  categoryGrid.querySelectorAll(".category-card").forEach((card) => {
+    card.addEventListener("click", () => setFilter(card.dataset.category));
+  });
 }
 
-function productMatches(product) {
+function renderFilterTabs() {
+  const filterNames = ["All", ...categories.map((category) => category.name)];
+  filterTabs.innerHTML = filterNames.map((name) => `
+    <button class="tab ${activeFilter === name ? "active" : ""}" type="button" data-filter="${name}">${name}</button>
+  `).join("");
+
+  filterTabs.querySelectorAll(".tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      activeFilter = tab.dataset.filter;
+      visibleCount = INITIAL_VISIBLE_COUNT;
+      renderFilterTabs();
+      renderProducts();
+    });
+  });
+}
+
+function filteredProducts() {
   const searchTerm = searchInput.value.trim().toLowerCase();
-  const matchesFilter = activeFilter === "All" || product.condition === activeFilter;
-  const matchesSearch = product.model.toLowerCase().includes(searchTerm);
-
-  return matchesFilter && matchesSearch;
+  return products.filter((product) => {
+    const matchesCategory = activeFilter === "All" || product.category === activeFilter;
+    const matchesSearch = !searchTerm || [product.name, product.category, product.shortDescription].some((value) => value.toLowerCase().includes(searchTerm));
+    return matchesCategory && matchesSearch;
+  });
 }
 
-// Re-rendering from product data keeps filters, search, and future product edits simple.
+// Only the current slice of matching products is placed in the DOM to keep the page lightweight.
 function renderProducts() {
-  const visibleProducts = products.filter(productMatches);
+  const matches = filteredProducts();
+  const visibleProducts = matches.slice(0, visibleCount);
 
-  resultsCount.textContent = `${visibleProducts.length} iPhone${visibleProducts.length === 1 ? "" : "s"} found`;
+  resultsCount.textContent = `${matches.length} product${matches.length === 1 ? "" : "s"} found`;
   productGrid.innerHTML = "";
 
-  if (!visibleProducts.length) {
-    productGrid.innerHTML = `<p class="empty-state">No iPhones matched your search. Try another model or filter.</p>`;
+  if (!matches.length) {
+    productGrid.innerHTML = `<p class="empty-state">No products matched your search. Try another category or message us on WhatsApp.</p>`;
+    loadMoreBtn.hidden = true;
     return;
   }
 
   const fragment = document.createDocumentFragment();
-
   visibleProducts.forEach((product) => {
     const card = document.createElement("article");
-    const conditionClass = product.condition === "Brand New" ? "brand-new" : "";
-    const placeholder = createPlaceholderImage(product.model, product.condition);
-
     card.className = "product-card";
     card.innerHTML = `
-      <div class="gallery">
-        <img class="main-image" src="${product.images[0]}" alt="${product.condition} ${product.model}" loading="lazy">
-        <div class="thumbs" aria-label="${product.model} image options">
-          ${product.images.map((image, index) => `
-            <button class="thumb ${index === 0 ? "active" : ""}" type="button" data-image="${image}" aria-label="Show image ${index + 1} for ${product.model}">
-              <img src="${image}" alt="" loading="lazy">
-            </button>
-          `).join("")}
-        </div>
+      <div class="product-media">
+        <img src="${product.image}" alt="${product.name} at MEGABROS ENTERPRISE" loading="lazy">
+        <span class="product-badge">${product.badge}</span>
       </div>
-      <div class="card-body">
-        <span class="condition ${conditionClass}">${product.condition}</span>
-        <h3>${product.model}</h3>
-        <ul class="detail-list">
-          <li><strong>Storage options available:</strong> ${product.storage}</li>
-          ${product.condition === "Brand New" ? "<li>Sealed or fresh stock confirmed on request</li>" : ""}
-          <li>Pickup available &bull; Nationwide delivery</li>
-        </ul>
-        <p class="price-note">Price changes often - confirm on WhatsApp</p>
-        <a class="whatsapp-btn" href="${buildWhatsappLink(product)}" target="_blank" rel="noopener">Order on WhatsApp</a>
+      <div class="product-body">
+        <div class="product-meta"><span>${product.category}</span><span>${product.condition}</span></div>
+        <h3>${product.name}</h3>
+        <p>${product.shortDescription}</p>
+        <p class="price-copy">Current price available on WhatsApp</p>
+        <p>Available for pickup at Computer Village or delivery</p>
+        <a class="btn btn-primary" href="${whatsappLink(product.whatsappMessage)}" target="_blank" rel="noopener">Order on WhatsApp</a>
       </div>
     `;
-
-    card.querySelectorAll("img").forEach((image) => {
-      image.addEventListener("error", () => {
-        image.src = placeholder;
-      }, { once: true });
-    });
-
-    card.querySelectorAll(".thumb").forEach((thumb) => {
-      thumb.addEventListener("click", () => {
-        const mainImage = card.querySelector(".main-image");
-        mainImage.src = thumb.dataset.image;
-        mainImage.alt = `${product.condition} ${product.model}`;
-        card.querySelectorAll(".thumb").forEach((item) => item.classList.remove("active"));
-        thumb.classList.add("active");
-      });
-    });
-
     fragment.appendChild(card);
   });
 
   productGrid.appendChild(fragment);
-  watchRevealElements();
+  loadMoreBtn.hidden = visibleProducts.length >= matches.length;
 }
 
-tabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    activeFilter = tab.dataset.filter;
-    tabs.forEach((item) => item.classList.toggle("active", item === tab));
-    renderProducts();
-  });
-});
-
-searchInput.addEventListener("input", renderProducts);
-
-menuToggle.addEventListener("click", () => {
-  const isOpen = navActions.classList.toggle("open");
-  menuToggle.classList.toggle("open", isOpen);
-  menuToggle.setAttribute("aria-expanded", String(isOpen));
-});
-
-navActions.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => {
-    navActions.classList.remove("open");
-    menuToggle.classList.remove("open");
-    menuToggle.setAttribute("aria-expanded", "false");
-  });
-});
-
-categoryCards.forEach((card) => {
-  card.addEventListener("click", () => {
-    activeFilter = card.dataset.category;
-    tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.filter === activeFilter));
-    renderProducts();
-    document.querySelector("#products").scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-});
-
-faqItems.forEach((item) => {
-  const button = item.querySelector("button");
-  button.addEventListener("click", () => {
-    item.classList.toggle("open");
-  });
-});
-
-shopImages.forEach((image, index) => {
-  image.addEventListener("error", () => {
-    image.src = createShopPlaceholderImage(index + 1);
-  }, { once: true });
-});
-
 function showHeroSlide(index) {
-  if (!heroSlides.length) {
-    return;
-  }
-
-  activeHeroSlide = (index + heroSlides.length) % heroSlides.length;
-  heroSlides.forEach((slide, slideIndex) => {
-    slide.classList.toggle("active", slideIndex === activeHeroSlide);
-  });
-  heroDots.forEach((dot, dotIndex) => {
-    dot.classList.toggle("active", dotIndex === activeHeroSlide);
-  });
+  activeHeroSlide = index;
+  heroSlides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === index));
+  heroDots.forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === index));
 }
 
 function startHeroCarousel() {
-  if (heroTimer || heroSlides.length <= 1) {
-    return;
-  }
-
+  window.clearInterval(heroTimer);
   heroTimer = window.setInterval(() => {
-    showHeroSlide(activeHeroSlide + 1);
+    showHeroSlide((activeHeroSlide + 1) % heroSlides.length);
   }, 3000);
 }
 
-heroDots.forEach((dot) => {
-  dot.addEventListener("click", () => {
-    showHeroSlide(Number(dot.dataset.slide));
-    window.clearInterval(heroTimer);
-    heroTimer = undefined;
-    startHeroCarousel();
+function setupInteractions() {
+  searchInput.addEventListener("input", () => {
+    visibleCount = INITIAL_VISIBLE_COUNT;
+    renderProducts();
   });
-});
 
-document.querySelectorAll(".hero-slide img").forEach((image, index) => {
-  image.addEventListener("error", () => {
-    image.src = createPlaceholderImage(`Hero iPhone ${index + 1}`, "Skyfonze");
-  }, { once: true });
-});
-
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("is-visible");
-      revealObserver.unobserve(entry.target);
-    }
+  loadMoreBtn.addEventListener("click", () => {
+    visibleCount += LOAD_MORE_STEP;
+    renderProducts();
   });
-}, { threshold: 0.12 });
 
-function watchRevealElements() {
-  document.querySelectorAll(".reveal, .product-card, .trust-item, .step, .shop-section, .why-strip, .category-card, .testimonial-card, .faq-item, .final-cta").forEach((element) => {
-    revealObserver.observe(element);
+  heroDots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      showHeroSlide(Number(dot.dataset.slide));
+      startHeroCarousel();
+    });
+  });
+
+  menuToggle.addEventListener("click", () => {
+    const isOpen = navActions.classList.toggle("open");
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  navActions.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navActions.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  document.querySelectorAll("[data-footer-category]").forEach((link) => {
+    link.addEventListener("click", () => setFilter(link.dataset.footerCategory));
   });
 }
 
+function setupRevealAnimation() {
+  const revealItems = document.querySelectorAll(".reveal");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealItems.forEach((item) => observer.observe(item));
+}
+
+renderCategories();
+renderFilterTabs();
 renderProducts();
-showHeroSlide(0);
+setupInteractions();
+setupRevealAnimation();
 startHeroCarousel();
-watchRevealElements();
