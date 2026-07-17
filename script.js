@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = "2347038995759";
+const WHATSAPP_NUMBER = "2347038995758";
 const PAGE_SIZE = 8;
 
 const products = [
