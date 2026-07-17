@@ -3,6 +3,159 @@ const PAGE_SIZE = 8;
 
 const products = [
   {
+    id: "iphone-17-pro-max",
+    name: "iPhone 17 Pro Max",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Pro Max",
+    image: "images/17promax-1.jpg",
+    description: "The top large-screen iPhone option for a premium Apple experience."
+  },
+  {
+    id: "iphone-17-pro",
+    name: "iPhone 17 Pro",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Pro",
+    image: "images/17pro-1.jpg",
+    description: "A premium Pro iPhone option in a more compact flagship size."
+  },
+  {
+    id: "iphone-17-air",
+    name: "iPhone 17 Air",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Air",
+    image: "images/17air-1.jpg",
+    description: "A sleek iPhone choice for customers who value a lighter design."
+  },
+  {
+    id: "iphone-17",
+    name: "iPhone 17",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "iPhone",
+    image: "images/17-1.jpg",
+    description: "A balanced current-generation iPhone for everyday use."
+  },
+  {
+    id: "iphone-16-plus",
+    name: "iPhone 16 Plus",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Plus",
+    image: "images/16plus-1.jpg",
+    description: "A roomy iPhone display without moving into the Pro Max range."
+  },
+  {
+    id: "iphone-16",
+    name: "iPhone 16",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "iPhone",
+    image: "images/16-1.jpg",
+    description: "A polished everyday iPhone with a comfortable standard size."
+  },
+  {
+    id: "iphone-15",
+    name: "iPhone 15",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Popular",
+    image: "images/15-1.jpeg",
+    description: "A popular modern iPhone choice for camera, apps and daily use."
+  },
+  {
+    id: "iphone-14-pro",
+    name: "iPhone 14 Pro",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Pro",
+    image: "images/14pro-1.jpeg",
+    description: "A compact Pro iPhone option with premium everyday appeal."
+  },
+  {
+    id: "iphone-14",
+    name: "iPhone 14",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "iPhone",
+    image: "images/14-1.jpeg",
+    description: "A dependable iPhone upgrade for work, photos and entertainment."
+  },
+  {
+    id: "iphone-13-pro",
+    name: "iPhone 13 Pro",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Pro",
+    image: "images/13pro-1.jpeg",
+    description: "A strong-value Pro iPhone in a manageable size."
+  },
+  {
+    id: "iphone-13",
+    name: "iPhone 13",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Popular",
+    image: "images/13-1.jpeg",
+    description: "A widely loved iPhone option with practical everyday value."
+  },
+  {
+    id: "iphone-12-pro-max",
+    name: "iPhone 12 Pro Max",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Pro Max",
+    image: "images/12promax-1.jpeg",
+    description: "A large-screen premium iPhone at a more accessible level."
+  },
+  {
+    id: "iphone-12-pro",
+    name: "iPhone 12 Pro",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Pro",
+    image: "images/12pro-1.jpeg",
+    description: "A refined Pro iPhone choice for everyday Apple users."
+  },
+  {
+    id: "iphone-12",
+    name: "iPhone 12",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Great value",
+    image: "images/12.jpeg",
+    description: "A familiar modern iPhone design with accessible everyday value."
+  },
+  {
+    id: "iphone-11-pro-max",
+    name: "iPhone 11 Pro Max",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Pro Max",
+    image: "images/11promax-1.jpeg",
+    description: "A classic large-screen Pro Max option for essential daily use."
+  },
+  {
+    id: "iphone-11-pro",
+    name: "iPhone 11 Pro",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Pro",
+    image: "images/11pro-1.jpeg",
+    description: "A compact classic iPhone for customers entering the Pro range."
+  },
+  {
+    id: "iphone-11",
+    name: "iPhone 11",
+    brand: "Apple",
+    collection: "iPhone",
+    tag: "Classic",
+    image: "images/11-1.jpeg",
+    description: "A practical and recognisable iPhone for everyday essentials."
+  },
+  {
     id: "samsung-z-fold-7",
     name: "Galaxy Z Fold 7",
     brand: "Samsung",
