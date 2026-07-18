@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = "2347038995758";
+const WHATSAPP_NUMBER = "2348036341852";
 const PAGE_SIZE = 8;
 
 const products = [
@@ -389,7 +389,7 @@ const menuToggle = document.querySelector(".menu-toggle");
 const navMenu = document.querySelector("#navMenu");
 
 function whatsappUrl(productName) {
-  const text = `Hello Megabros, I am interested in the ${productName}. Please confirm today's price, available condition, storage and colours.`;
+  const text = `Hello Oceantips Gadgetville, I am interested in the ${productName}. Please confirm today's price, available condition, storage and colours.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
@@ -412,7 +412,7 @@ function productCard(product) {
   return `
     <article class="product-card" data-product-id="${product.id}" tabindex="0" role="button" aria-label="View ${product.name} details">
       <div class="product-media">
-        <img src="${product.image}" alt="${product.name} available from Megabros Enterprise" loading="lazy">
+        <img src="${product.image}" alt="${product.name} available from Oceantips Gadgetville" loading="lazy">
         <span class="product-tag">${product.tag}</span>
       </div>
       <div class="product-body">
