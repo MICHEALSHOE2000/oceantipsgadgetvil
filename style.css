@@ -304,7 +304,7 @@ p, h1, h2, h3 { margin-top: 0; }
 .faq details p { max-width: 680px; padding: 0 30px 24px 0; margin: 0; color: var(--muted); font-size: .86rem; }
 
 .final-cta { position: relative; margin-bottom: clamp(75px, 8vw, 120px); padding: clamp(58px, 8vw, 104px); overflow: hidden; border-radius: 38px; color: #fff; background: #0b0c0f; isolation: isolate; }
-.final-cta::before { content: "M"; position: absolute; z-index: -1; right: 2%; top: -42%; color: rgba(255,255,255,.025); font-family: var(--font-display); font-size: 38rem; font-weight: 800; line-height: 1; }
+.final-cta::before { content: "O"; position: absolute; z-index: -1; right: 2%; top: -42%; color: rgba(255,255,255,.025); font-family: var(--font-display); font-size: 38rem; font-weight: 800; line-height: 1; }
 .cta-glow { position: absolute; z-index: -1; left: -8%; bottom: -65%; width: 520px; height: 520px; border-radius: 50%; background: rgba(214,173,83,.19); filter: blur(4px); }
 .kicker.light { color: rgba(255,255,255,.5); }
 .final-cta h2 { max-width: 880px; margin-bottom: 24px; font-family: var(--font-display); font-size: clamp(3rem, 6.4vw, 6.4rem); font-weight: 700; letter-spacing: -.08em; line-height: .94; }
